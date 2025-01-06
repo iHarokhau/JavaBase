@@ -1,4 +1,4 @@
-package Homework;
+package Homework.String;
 
 /*
 Перевернуть строку и вывести на консоль
