@@ -1,11 +1,11 @@
-package Homework.String;
+package Homework.ReverseTheString;
 
 /*
 Перевернуть строку и вывести на консоль
 String string = "I love Java"
  */
 
-public class ReverseTheString {
+public class ReverseString {
     /**
      * Метод main используется для хранения начальных данных,
      * запуска программы и вывода в консоль наших результатов.
