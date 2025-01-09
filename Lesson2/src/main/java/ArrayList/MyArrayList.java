@@ -16,13 +16,25 @@ import java.util.ArrayList;
 
 
 public class MyArrayList {
-    private String name;
+    public static void main(String[] args) {
+        ArrayList<String> name = new ArrayList<String>();
 
-    private MyArrayList(String name){
-        this.name = name;
+        name.add("Petya");
+        name.add("Polina");
+        name.add("Dmitry");
+        name.add("Valentin");
+        name.add("Sergey");
+        name.add("Natalia");
+        name.add("Mihail");
+        name.add("Grigory");
+        name.add("Vladislav");
+        name.add("Katrin");
+
+        System.out.println(name);
+
+        name.add(3, "Vladimir");
+
+        System.out.println(name);
     }
 
-    private static ArrayList createArrayList(){
-
-    }
 }
