@@ -1,8 +1,5 @@
 package ArrayList;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-
 /*
 Реализовать MyArrayList.
  Методы, обязательные к реализации:
@@ -16,102 +13,222 @@ import java.util.Comparator;
 
 
 
-public class MyArrayList {
-    public static void main(String[] args) {
-        ArrayList<String> name = new ArrayList<>();
+public class MyArrayList <T extends Comparable<? super T>>{
 
-        name.add("Petya");
-        name.add("Polina");
-        name.add("Dmitry");
-        name.add("Valentin");
-        name.add("Sergey");
-        name.add("Natalia");
-        name.add("Mihail");
-        name.add("Grigory");
-        name.add("Vladislav");
-        name.add("Katrin");
-        System.out.println(name);
+    /**
+     * Массив для хранения элементов списка.
+     */
+    private Object[] array;
 
-        System.out.println(addElement(name, "Ihar"));
-        System.out.println(addElementWithIndex(3, "Vladimir", name));
-        System.out.println(getElementNumber(name, 5));
-        removeElement(name,2);
-        naturalSortMyArray(name);
-        reverseSortMyArray(name);
-        clearMyArray(name);
+    /**
+     * Размер списка (количество добавленных элементов).
+     */
+    private int size;
+
+    /**
+     * Конструктор по умолчанию.
+     */
+    public MyArrayList(){
+        this.array = new Object[10];
+        this.size = 0;
     }
 
     /**
-     * The method "addElement" adds the element to the end "ArrayList<> name".
-     * @param name - the name our ArrayList's name.
-     * @param anyName - the String value.
-     * @return "ArrayList<> name".
+     * Добавляет элемент в конец списка.
+     *
+     * @param element Элемент для добавления.
      */
-    public static ArrayList<String> addElement(ArrayList<String> name, String anyName) {
-        name.add(anyName);
-        return name;
+    public void add(T element){
+        ensureCapacity();
+        array[size++] = element;
     }
 
     /**
-     * The method "addElementWithIndex" adds the string value by item number.
-     * @param index - the number of index.
-     * @param anyName - the string's value.
-     * @param name - the name our ArrayList's name.
-     * @return "ArrayList<String> name".
+     * Добавляет элемент в указанную позицию списка.
+     *
+     * @param index Индекс для добавления элемента.
+     * @param element Элемент для добавления.
+     * @throws IndexOutOfBoundsException Если индекс выходит за пределы размера списка.
      */
-    private static ArrayList<String> addElementWithIndex(int index, String anyName, ArrayList<String> name) {
-        name.add(index, anyName);
-        return name;
+    public void add(int index, T element){
+        if (index < 0 || index > size){
+            throw new IndexOutOfBoundsException("Индекс: " + index + ", Размер: " + size);
+        }
+        ensureCapacity();
+
+        shiftElementsToRight(index);
+        array[index] = element;
+        size++;
     }
 
     /**
-     * The method "getElementNumber" returns the string value "ArrayList<String> name" by element index.
-     * @param name - the name our ArrayList's name.
-     * @param index - the number of index.
-     * @return the string value of "ArrayList<String> name".
+     * Возвращает элемент по заданному индексу.
+     *
+     * @param index Индекс для получения элемента.
+     * @return Элемент списка.
+     * @throws IndexOutOfBoundsException Если индекс выходит за пределы размера списка.
      */
-    private static String getElementNumber(ArrayList<String> name, int index) {
-        return name.get(index);
+    @SuppressWarnings("unchecked")
+    public T get(int index){
+        checkIndex(index);
+        return (T) array[index];
+    }
+
+    private void checkIndex(int index){
+        if (index < 0 || index >= size){
+            throw new IndexOutOfBoundsException("Индекс: " + index + ", Размер: " + size);
+        }
     }
 
     /**
-     * The method "removeElement" deletes a string value by index value
-     * and outputs the value to the console.
-     * @param name - the name our ArrayList's name.
-     * @param index - the index ArrayList's value.
+     * Удаляет элемент по заданному индексу из списка.
+     *
+     * @param index Индекс для удаления элемента.
+     * @throws IndexOutOfBoundsException Если индекс выходит за пределы размера списка.
      */
-    private static void removeElement(ArrayList<String> name, int index) {
-        name.remove(index);
-        System.out.println(name);
+    public void remove(int index){
+        if (index < 0 || index >= size){
+            throw new IndexOutOfBoundsException("Индекс: " + index + ", Размер: " + size);
+        }
+        shiftElementsToLeft(index);
+        array[--size] = null;
     }
 
     /**
-     * The method "clearMyArray" clears all values in "ArrayList<String> name"
-     * and outputs "ArrayList" to the console.
-     * @param name - the name our ArrayList's name.
+     * Очищает весь список, устанавливая "нулевой" размер и обнуление всех элементов.
      */
-    private static void clearMyArray(ArrayList<String> name) {
-        name.clear();
-        System.out.println(name);
+    public void clear(){
+        for (int i = 0; i < size; i++) {
+            array[i] = null;
+        }
+        size = 0;
     }
 
     /**
-     * The method "naturalSortMyArray" sorts all values in ascending order
-     * and outputs "ArrayList" to the console.
-     * @param name - the name our ArrayList's name.
+     * Возвращает текущий размер списка.
+     *
+     * @return Размер списка.
      */
-    private static void naturalSortMyArray(ArrayList<String> name) {
-        name.sort(Comparator.naturalOrder());
-        System.out.println(name);
+    public int size(){
+        return size;
     }
 
     /**
-     * The method "reverseSortMyArray" sorts all values in  descending oder
-     * and outputs "ArrayList" to the console.
-     * @param name - the name our ArrayList's name.
+     * Проверяет и увеличивает размер списка, если текущий достиг предела массива.
      */
-    private static void reverseSortMyArray(ArrayList<String> name) {
-        name.sort(Comparator.reverseOrder());
-        System.out.println(name);
+    private void ensureCapacity(){
+        if (size == array.length){
+            int newCapacity = array.length * 2;
+            Object[] newArray = new Object[newCapacity];
+            System.arraycopy(array, 0, newArray, 0, size);
+            array = newArray;
+        }
+    }
+
+    /**
+     * Сдвигает элементы вправо, начиная с указанного элемента.
+     *
+     * @param index Индекс, с которого начинается сдвиг.
+     */
+    private void shiftElementsToRight(int index){
+        for (int i = size; i > index; i--){
+            array[i] = array[i -1];
+        }
+    }
+
+    /**
+     * Сдвигает элементы влево, начиная с указанного.
+     *
+     * @param index Индекс, с которого начинается сдвиг.
+     */
+    private void shiftElementsToLeft(int index){
+        for (int i = index; i < size - 1; i++) {
+            array[i] = array[i + 1];
+        }
+    }
+
+    /**
+     * Выполняет сортировку списка с использованием алгоритма быстрой сортировки.
+     */
+    public void quickSort(){
+        quickSort(0, size - 1);
+    }
+
+    /**
+     * Внутренний метод для рекурсивной реализации алгоритма быстрой сортировки.
+     *
+     * @param low Нижний индекс.
+     * @param high Верхний индекс.
+     */
+    void quickSort(int low, int high){
+        if(low < high){
+            int partitionIndex = partition(low, high);
+            quickSort(low, partitionIndex - 1);
+            quickSort(partitionIndex + 1, high);
+        }
+    }
+
+    /**
+     * Выполняет разделение элементов для алгоритма быстрой сортировки.
+     *
+     * @param low Нижний индекс.
+     * @param high Верхний индекс.
+     * @return Индекс разделения.
+     */
+    private int partition(int low, int high){
+        T pivot = T get(high);
+
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (compare(get(j), pivot) <= 0){
+                i++;
+                swap(i, j);
+            }
+        }
+
+        swap(i + 1, high);
+        return i + 1;
+    }
+
+    /**
+     * Обменивает значение двух элементов.
+     *
+     * @param i Индекс первого элемента.
+     * @param j Индекс второго элемента.
+     */
+    private void swap(int i, int j){
+        T temp = get(i);
+        set(i, get(j));
+        set(j, temp);
+    }
+
+    /**
+     * Сравнивает два элемента списка.
+     *
+     * @param a Первый элемент для сравнения.
+     * @param b Второй элемент для српавнения.
+     * @return Результат сравнения.
+     * @throws NullPointerException Если один из элементов равен "null".
+     */
+    private int compare(T a, T b){
+        if (a == null || b == null){
+            throw new NullPointerException("Невозможно сравнить пустые элементы.");
+        }
+        return a.compareTo(b);
+    }
+
+    /**
+     * Устанавливает значение элемента по указанному индексу.
+     *
+     * @param index Индекс элемента.
+     * @param element Новое значение элемента.
+     * @throws IndexOutOfBoundsException Если индекс выходит за пределы массива.
+     */
+    private void set(int index, T element){
+        if (index < 0 || index >= size){
+            throw new IndexOutOfBoundsException("Индекс: " + index + ", Размер: " + size);
+        }
+        array[index] = element;
     }
 }
