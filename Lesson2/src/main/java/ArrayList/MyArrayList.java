@@ -8,7 +8,14 @@ package ArrayList;
 - получить элемент: get(int index),
 - удалить элемент remove(int index),
 - очистить всю коллекцию: clear(),
-- отсортировать коллекцию: sort(Comparator<T> comparator)
+- отсортировать коллекцию: sort(Comparator<T> comparator).
+
+Реализовать алгоритм quicksort для реализованного вами MyArrayList.
+Ваш QuickSort должен принимать список любого типа и сортировать его.
+
+Использовать:
+○ Java generics
+○ Comparable, Comparator
  */
 
 
@@ -176,7 +183,7 @@ public class MyArrayList <T extends Comparable<? super T>>{
      * @return Индекс разделения.
      */
     private int partition(int low, int high){
-        T pivot = T get(high);
+        T pivot = (T) get(high);
 
         int i = low - 1;
 
@@ -207,7 +214,7 @@ public class MyArrayList <T extends Comparable<? super T>>{
      * Сравнивает два элемента списка.
      *
      * @param a Первый элемент для сравнения.
-     * @param b Второй элемент для српавнения.
+     * @param b Второй элемент для сравнения.
      * @return Результат сравнения.
      * @throws NullPointerException Если один из элементов равен "null".
      */

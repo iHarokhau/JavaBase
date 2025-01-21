@@ -1,79 +1,74 @@
 package ArrayList;
 
-/*
-Реализовать алгоритм quicksort для реализованного вами MyArrayList.
-Ваш QuickSort должен принимать список любого типа и сортировать его.
-
-Использовать:
-○ Java generics
-○ Comparable, Comparator
- */
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-
 public class QuickSortMyArrayList {
     public static void main(String[] args) {
+        MyArrayList<Integer> myArrayList = new MyArrayList<>();
 
-        System.out.println(intArray());
-        System.out.println(quickSort(intArray(), 0, );
-    }
+        myArrayList.add(9);
+        myArrayList.add(8);
+        myArrayList.add(15);
+        myArrayList.add(3);
+        myArrayList.add(2);
+        myArrayList.add(1);
+        myArrayList.add(0);
+        myArrayList.add(22);
+        myArrayList.add(13);
+        myArrayList.add(4);
 
-    private static void quickSort (int[] arr, int low, int high){
-        if (low < high){
-            int pi = partition(arr, low, high);
-
-            quickSort(arr, low, pi - 1);
-            quickSort(arr, pi + 1, high);
-        }
-    }
-
-    private static int partition (int[] arr, int low, int high){
-        int middle = low + (high - low) / 2;
-        int pivot = arr[middle];
-
-        int temp = arr[middle];
-        arr[middle] = arr[high];
-        arr[high] = temp;
-
-        int i = low -1;
-        for (int j = low; j < high; j++) {
-            if (arr[j] < pivot){
-                i++;
-
-                temp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = temp;
-            }
+        /*
+         * Вывод списка элементов до сортировки.
+         */
+        System.out.println("\nДо сортировки: ");
+        for (int i = 0; i < myArrayList.size(); i++) {
+            System.out.print(myArrayList.get(i) + " ");
         }
 
-        temp = arr[i + 1];
-        arr[i + 1] = arr[high];
-        arr[high] = temp;
+        myArrayList.quickSort();
 
-        return i + 1;
-    }
-
-//    protected static class NumberContainer <N>{
-//        private N number;
-//
-//        protected NumberContainer(N number){
-//            this.number = number;
-//        }
-//
-//        protected void print(){
-//            System.out.println(number);
-//        }
-//    }
-
-    private static ArrayList<?> intArray(){
-        Random random = new Random();
-        Integer[] randomValue = new Integer[100];
-        for (int i = 0; i < randomValue.length; i++) {
-            randomValue[i] = random.nextInt(100);
+        /*
+         * Вывод списка после сортировки.
+         */
+        System.out.println("\n\nПосле сортировки: ");
+        for (int i = 0; i < myArrayList.size(); i++) {
+            System.out.print(myArrayList.get(i) + " ");
         }
-        return new ArrayList<>(Arrays.asList(randomValue));
-    }
 
+        /*
+         * Вывод списка после добавления элемента.
+         */
+        myArrayList.add(10);
+        System.out.println("\n\nСписок после добавления 10 элемента: ");
+        for (int i = 0; i < myArrayList.size(); i++) {
+            System.out.print(myArrayList.get(i) + " ");
+        }
+
+        /*
+         * Вывод списка после добавления элемента по индексу.
+         */
+        myArrayList.add(2, 66);
+        System.out.println("\n\nСписок после добавления 66 элемента по индексу 2: ");
+        for (int i = 0; i < myArrayList.size(); i++) {
+            System.out.print(myArrayList.get(i) + " ");
+        }
+
+        /*
+         * Вывод элемента по указанному индексу.
+         */
+        System.out.println("\n\nЭлемент по индексу 3: \n" + myArrayList.get(3));
+
+        /*
+         * Вывод списка после удаления элемента по индексу.
+         */
+        myArrayList.remove(4);
+        System.out.println("\nЭлементы после удаления элемента по индексу 4: ");
+        for (int i = 0; i < myArrayList.size(); i++) {
+            System.out.print(myArrayList.get(i) + " ");
+        }
+
+        myArrayList.clear();
+        System.out.println("\n\nЭлементы после очистки коллекции: ");
+        for (int i = 0; i < myArrayList.size(); i++) {
+            System.out.print(myArrayList);
+        }
+    }
 }
